@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+body {
+    background-color: #121212;
+    overflow: hidden;
+    cursor: none;
+}
+
+.list-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90vw;
+    max-width: 400px;
+    max-height: 80vh;
+    overflow-y: auto;
+    direction: rtl;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.list-container::-webkit-scrollbar {
+    display: none;
+}
+
+.list-container {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+h1 {
+    text-align: center;
+    color: rgb(255, 0, 0);
+    margin-bottom: 20px;
+    text-shadow: 0 0 10px currentColor;
+    animation: rgbAnimation 5s infinite;
+}
+
+@keyframes rgbAnimation {
+    0% { color: rgb(255, 0, 0); }
+    33% { color: rgb(0, 255, 0); }
+    66% { color: rgb(0, 0, 255); }
+    100% { color: rgb(255, 0, 0); }
+}
+
+.text-box {
+    position: relative;
+    background-color: #333;
+    color: white;
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 8px;
+    font-size: 18px;
+    text-align: center;
+    transition: box-shadow 0.3s ease, color 0.3s ease;
+    cursor: default; 
+    width: calc(100% - 30px); 
+}
+
+.text-box:hover {
+    box-shadow: 0 0 15px 5px rgba(255, 255, 255, 0.5);
+}
+
+.top-1 { color: gold; }
+.top-2 { color: silver; }
+.top-3 { color: #CD7F32; }
+
+.particle {
+    position: fixed;
+    bottom: -5px;
+    width: 2px;
+    height: 2px;
+    background-color: white; /* Always white */
+    border-radius: 50%;
+    opacity: 0.7;
+    animation: particleAnimation 5s linear forwards;
+}
+
+@keyframes particleAnimation {
+    to { 
+        transform: translateY(-100vh) translateX(calc(50vw - 50% + (200vw * random()) - 100vw));
+        opacity: 0;
+    }
+}
+
+/* Tooltip styles */
+.text-box .tooltip {
+    visibility: hidden;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #121212;
+    color: white;
+    padding: 8px;
+    border-radius: 6px;
+    font-size: 14px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 3;
+    pointer-events: none; 
+}
+
+.text-box:hover .tooltip {
+    visibility: visible;
+    opacity: 1;
+}
+</style>
+</head>
+<body>
+
+<div class="list-container">
+    <h1>Future Isac GDPS Placements</h1>
+    <div class="text-box top-1" data-color="gold">Wrath of God<span class="tooltip">Unfinished</span></div>
+    <div class="text-box top-2" data-color="silver">Broken Rules<span class="tooltip">Not Started</span></div>
+    <div class="text-box top-3" data-color="#CD7F32">Depressed Bastards<span class="tooltip">Not Started</span></div>
+    <div class="text-box">I DONT WANNA CRY<span class="tooltip">Deco Stage</span></div>
+    <div class="text-box">N/A</div>
+    <div class="text-box">N/A</div>
+    <div class="text-box">N/A</div>
+    <div class="text-box">N/A</div>
+    <div class="text-box">N/A</div>
+    <div class="text-box">N/A</div>
+</div>
+
+<script>
+const mouseX = 0;
+const mouseY = 0;
+
+document.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+});
+
+function createParticle() {
+    const particle = document.createElement('div');
+    particle.classList.add('particle');
+    particle.style.backgroundColor = 'white'; // Fixed color
+    particle.style.left = Math.random() * 100 + 'vw';
+    document.body.appendChild(particle);
+    
+    particle.addEventListener('animationend', () => {
+        particle.remove();
+    });
+
+    // Update glow based on distance to mouse (same as before)
+    function updateGlow() {
+        const dx = mouseX - (particle.offsetLeft + particle.offsetWidth / 2);
+        const dy = mouseY - (particle.offsetTop + particle.offsetHeight / 2);
+        const distance = Math.sqrt(dx * dx + dy * dy);
+
+        const maxGlow = 15;
+        const minGlow = 5;
+        const glowRadius = Math.max(minGlow, maxGlow - (distance / 50));
+        particle.style.boxShadow = `0 0 ${glowRadius}px rgba(255, 255, 255, 0.7)`; 
+
+        requestAnimationFrame(updateGlow);
+    }
+    updateGlow();
+}
+
+setInterval(createParticle, 100);
+
+// ... (rest of the script is the same) ...
+</script>
+
+</body>
+</html>
